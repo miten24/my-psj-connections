@@ -14,6 +14,8 @@ import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/AdminDashboard";
+import Terms from "./pages/Terms";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -32,6 +34,7 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/terms" element={<Terms />} />
               
               {/* Protected routes */}
               <Route 
@@ -47,6 +50,14 @@ const App = () => (
                 element={
                   <ProtectedRoute allowedRoles={['donor', 'admin']}>
                     <DonorPortal />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AdminDashboard />
                   </ProtectedRoute>
                 } 
               />

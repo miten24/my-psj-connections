@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define user roles
@@ -11,6 +10,10 @@ export interface User {
   name: string;
   role: UserRole;
   isVerified?: boolean;
+  interests?: string[];
+  location?: string;
+  focusAreas?: string[];
+  needs?: string[];
 }
 
 interface AuthContextType {
@@ -29,28 +32,62 @@ const mockLogin = async (email: string, password: string): Promise<User> => {
   // Simulating API call delay
   await new Promise(resolve => setTimeout(resolve, 1000));
   
-  // This is just for demo purposes
-  if (email === 'ngo@example.com' && password === 'password') {
-    return { 
-      id: '1', 
-      email, 
-      name: 'Example NGO', 
-      role: 'ngo',
-      isVerified: true
-    };
-  } else if (email === 'donor@example.com' && password === 'password') {
-    return { 
-      id: '2', 
-      email, 
-      name: 'John Donor', 
-      role: 'donor' 
-    };
-  } else if (email === 'admin@example.com' && password === 'password') {
+  // Admin credentials
+  if (email === 'admin@mypsj.com' && password === 'password123') {
     return { 
       id: '3', 
       email, 
       name: 'Admin User', 
       role: 'admin' 
+    };
+  }
+  
+  // NGO credentials
+  if (email === 'ngo1@mypsj.com' && password === 'password123') {
+    return { 
+      id: '1', 
+      email, 
+      name: 'Health Alliance', 
+      role: 'ngo',
+      isVerified: true,
+      focusAreas: ['Healthcare', 'Medical Supplies'],
+      needs: ['Funds', 'Medical Supplies'],
+      location: 'New York'
+    };
+  } 
+  
+  // Donor credentials
+  else if (email === 'donor1@mypsj.com' && password === 'password123') {
+    return { 
+      id: '2', 
+      email, 
+      name: 'John Donor', 
+      role: 'donor',
+      interests: ['Healthcare', 'Education'],
+      location: 'New York'
+    };
+  } 
+  
+  // Other default cases from original code
+  else if (email === 'ngo@example.com' && password === 'password') {
+    return { 
+      id: '4', 
+      email, 
+      name: 'Example NGO', 
+      role: 'ngo',
+      isVerified: true,
+      focusAreas: ['Education', 'Children'],
+      needs: ['Volunteers', 'School Supplies'],
+      location: 'Chicago'
+    };
+  } else if (email === 'donor@example.com' && password === 'password') {
+    return { 
+      id: '5', 
+      email, 
+      name: 'John Donor', 
+      role: 'donor',
+      interests: ['Environment', 'Conservation'],
+      location: 'Seattle'
     };
   }
   
@@ -63,11 +100,15 @@ const mockRegister = async (userData: Partial<User> & { password: string }): Pro
   
   // This is just for demo purposes
   return { 
-    id: '4', 
+    id: Math.random().toString(36).substr(2, 9), 
     email: userData.email || 'unknown@example.com', 
     name: userData.name || 'New User', 
     role: userData.role || 'donor',
-    isVerified: userData.role === 'ngo' ? false : undefined
+    isVerified: userData.role === 'ngo' ? false : undefined,
+    interests: userData.interests || [],
+    location: userData.location || '',
+    focusAreas: userData.focusAreas || [],
+    needs: userData.needs || []
   };
 };
 
