@@ -16,7 +16,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 // Define the form schema using zod
 const formSchema = z.object({
-  role: z.enum(['ngo', 'donor'], {
+  role: z.enum(['ngo', 'donor', 'admin'], {
     required_error: 'Please select a role',
   }),
   name: z.string().min(3, {
