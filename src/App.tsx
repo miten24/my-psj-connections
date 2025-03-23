@@ -16,6 +16,7 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import Terms from "./pages/Terms";
+import NGOProfile from "./pages/NGOProfile";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/terms" element={<Terms />} />
+              <Route path="/ngo/:id" element={<NGOProfile />} />
               
               {/* Protected routes */}
               <Route 

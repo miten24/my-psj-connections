@@ -7,10 +7,12 @@ import { CheckCircle, Heart, MapPin, Search } from 'lucide-react';
 import { useMockData } from '@/hooks/useMockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 export const DonorDashboard = () => {
   const { user } = useAuth();
   const { ngos, matches } = useMockData();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("perfect-matches");
   
   // Get current donor's matches
@@ -32,6 +34,18 @@ export const DonorDashboard = () => {
       user.interests && user.interests.includes(area)
     )
   );
+
+  const handleNGOCardClick = (ngoId: string, ngoName: string) => {
+    // In a real application, this would redirect to the NGO's custom website
+    // For now, we'll use a toast to inform the user
+    toast({
+      title: "Visiting NGO Website",
+      description: `You are now visiting ${ngoName}'s website.`,
+    });
+    
+    // This would be the URL in a real application
+    // window.location.href = `https://mypsj.org/ngo/${ngoName.toLowerCase().replace(/\s+/g, '-')}`;
+  };
 
   return (
     <div className="space-y-8">
@@ -123,7 +137,11 @@ export const DonorDashboard = () => {
                 if (!ngo) return null;
                 
                 return (
-                  <Card key={match.id} className="overflow-hidden hover:shadow-md transition-shadow">
+                  <Card 
+                    key={match.id} 
+                    className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => handleNGOCardClick(ngo.id, ngo.name)}
+                  >
                     <div className="h-24 bg-gradient-to-r from-primary/10 to-secondary/10 flex items-center justify-center">
                       <div className="text-3xl font-bold text-primary/30">{ngo.name.charAt(0)}</div>
                     </div>
@@ -182,7 +200,11 @@ export const DonorDashboard = () => {
                 if (!ngo) return null;
                 
                 return (
-                  <Card key={match.id} className="overflow-hidden hover:shadow-md transition-shadow">
+                  <Card 
+                    key={match.id} 
+                    className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => handleNGOCardClick(ngo.id, ngo.name)}
+                  >
                     <div className="h-24 bg-gradient-to-r from-primary/10 to-secondary/10 flex items-center justify-center">
                       <div className="text-3xl font-bold text-primary/30">{ngo.name.charAt(0)}</div>
                     </div>
@@ -236,7 +258,11 @@ export const DonorDashboard = () => {
         <TabsContent value="all-ngos">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {ngos.filter(ngo => ngo.isVerified).map(ngo => (
-              <Card key={ngo.id} className="overflow-hidden hover:shadow-md transition-shadow">
+              <Card 
+                key={ngo.id} 
+                className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => handleNGOCardClick(ngo.id, ngo.name)}
+              >
                 <div className="h-24 bg-gradient-to-r from-primary/10 to-secondary/10 flex items-center justify-center">
                   <div className="text-3xl font-bold text-primary/30">{ngo.name.charAt(0)}</div>
                 </div>
@@ -265,8 +291,8 @@ export const DonorDashboard = () => {
                   <p className="text-sm text-muted-foreground">{ngo.description}</p>
                 </CardContent>
                 <CardFooter className="flex justify-end">
-                  <Button size="sm" variant="outline" asChild>
-                    <Link to={`/ngo/${ngo.id}`}>View Profile</Link>
+                  <Button size="sm" variant="outline">
+                    View Profile
                   </Button>
                 </CardFooter>
               </Card>
